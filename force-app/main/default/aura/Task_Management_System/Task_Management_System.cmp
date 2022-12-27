@@ -1,0 +1,27 @@
+<aura:component controller="Task_Management_System_Apex" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<!--<aura:handler name="change" value="{!v.LCStage}" action="{!c.doInit}"/>-->
+    
+	<aura:attribute name="LCStage" type="List"/>
+    
+    <aura:attribute name="AllStage" type="List"/>
+    <aura:attribute name="recordId" type="String"/>
+    
+    
+    <aura:attribute name="selectedVal" type="String" />
+    <br/>
+    <div><center><span style="font-size:16px; font-weight:700;">TimeLine</span></center>
+    <lightning:buttonGroup class="btnGrp">
+        <lightning:button label="Reload" onclick="{!c.doInit}"/>
+        <lightning:buttonMenu aura:id="menu" alternativetext="Filter by" label="Filter by" onselect="{!c.onSelect}">
+            	<lightning:menuItem aura:id="menuItems" label="Pre-Implementation" value="Pre-Implementation"></lightning:menuItem>
+                <lightning:menuItem aura:id="menuItems" label="Implementation" value="Implementation"></lightning:menuItem>
+                <lightning:menuItem aura:id="menuItems" label="Post-Implementation" value="Post-Implementation"></lightning:menuItem>
+            </lightning:buttonMenu>
+        </lightning:buttonGroup>
+    </div>
+    <aura:iteration items="{!v.LCStage}" var="stage">
+        <c:Task_Management_loadTask LCStage="{!stage}" recordId="{!v.recordId}"/>
+    </aura:iteration>
+
+</aura:component>

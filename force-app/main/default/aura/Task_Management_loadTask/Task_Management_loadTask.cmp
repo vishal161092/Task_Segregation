@@ -1,0 +1,160 @@
+<aura:component controller="Task_Management_System_Apex">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	
+    <aura:attribute name="LCStage" type="List"/>
+
+    <aura:attribute name="TaskList" type="List"/>
+    <aura:attribute name="recordId" type="String"/>
+    
+        <lightning:workspaceAPI aura:id="workspace" />
+        
+    <aura:attribute name="clickedTask" type="string"/>
+    
+            <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    
+    <div style="padding:10px">
+    <div class="boxStyle">
+        <div style="padding-top:15px; padding-left:15px; padding-bottom:10px; font-size:16px; font-weight:700; background-color:#F3F3F3">{!v.LCStage}</div>
+        <hr style="margin:0px"/>
+        	<div class="c-container" style="padding-left:12px;">
+                
+                <div class="slds-grid slds-wrap">
+                  <div class="slds-size_1-of-8" style="width:4%">
+                    <div class=""></div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:28%">
+                    <div class="">Task Name</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="">Sub-Phase</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:10%">
+                    <div class="">Duration</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="">Predecessor</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="">Start Date</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="">End Date</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:10%">
+                    <div class="">Assignee</div>
+                  </div>
+               <!--   <div class="slds-size_1-of-9" style="width:12%">
+                    <div class="">Comments</div>
+                  </div> -->
+                    
+               <!--   <div class="slds-size_1-of-6" style="width:6%">
+                    <div class="">Action</div>
+                  </div> -->
+                    
+                </div>
+                
+    </div>
+        <hr style="margin:0px"/>
+        <div style="padding-top:5px">
+          
+        <aura:if isTrue="{!not(empty(v.TaskList))}">
+            
+            <aura:iteration items="{!v.TaskList}" var="taskItem">
+				
+          <!--      <aura:if isTrue="{!taskItem.Sub_Phase__c == 'Account Setup Form'}"> -->
+                    <div class="c-container">
+                    <div class="slds-grid slds-wrap">
+                        
+                  <div class="slds-size_1-of-8" style="width:4%">
+                      <div class="" style="padding-left:18px; padding-top:5px; padding-bottom:5px"><img src="{!taskItem.Status_Formula__c}" height="20" width="20" /></div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:28%">
+                    <div class="" style="padding-left:12px; padding-top:5px; padding-bottom:5px">
+                     <a href=""> <output id="{!taskItem.Id}" onclick="{!c.openTabWithSubtab}">{!taskItem.Subject}</output></a>
+                  
+                      </div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                      
+                      <aura:if isTrue="{!taskItem.Sub_Phase__c == 'Initial Introduction Meeting'}">
+                    <div class="" style="padding-left:8px; padding-top:5px; padding-bottom:5px; background-color:#CBE4F9;">{!taskItem.Sub_Phase__c}</div>
+                      </aura:if>
+                      <aura:if isTrue="{!taskItem.Sub_Phase__c == 'Transfer of Account Balances'}">
+                    <div class="" style="padding-left:8px; padding-top:5px; padding-bottom:5px; background-color:#EFFADA;">{!taskItem.Sub_Phase__c}</div>
+                      </aura:if>
+                      <aura:if isTrue="{!taskItem.Sub_Phase__c == 'Account Setup Form'}">
+                    <div class="" style="padding-left:8px; padding-top:5px; padding-bottom:5px; background-color:#D5CDEA;">{!taskItem.Sub_Phase__c}</div>
+                      </aura:if>
+                      <aura:if isTrue="{!taskItem.Sub_Phase__c == 'Client Meetings'}">
+                          <div class="" style="padding-left:8px; padding-top:5px; padding-bottom:5px; background-color:#CDF5F5;">{!taskItem.Sub_Phase__c}<br/>&nbsp;</div>
+                      </aura:if>
+                      
+                      </div>
+                  <div class="slds-size_1-of-8" style="width:10%">
+                    <div class="" style="padding-left:10px; padding-top:5px; padding-bottom:5px">{!taskItem.Duration__c}</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="" style="padding-left:34px; padding-top:5px; padding-bottom:5px"> {!taskItem.Predecessor__c}</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="" style="padding-left:0px; padding-top:5px; padding-bottom:5px">{!taskItem.ActivityDate}</div>
+                  </div>
+                  <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="" style="padding-left:0px; padding-top:5px; padding-bottom:5px">{!taskItem.ActivityDate}</div>
+                  </div>
+                   <div class="slds-size_1-of-8" style="width:10%">
+                    <div class="" style="padding-left:18px; padding-top:5px; padding-bottom:5px">{!taskItem.Owner.FirstName}</div>
+                  </div>
+               <!--   <div class="slds-size_1-of-8" style="width:12%">
+                    <div class="" style="padding-left:0px; padding-right:5px; padding-top:5px; padding-bottom:5px">{!taskItem.Description}</div>
+                  </div>
+				-->                       
+                </div>
+   			 </div>
+          <!--      </aura:if>  -->
+                
+                <hr style="margin:0.5px"/>
+            </aura:iteration>
+
+            <aura:set attribute="else">
+            <div style="padding-left:12px; padding-top:5px; padding-bottom:5px">No Records Found.</div>
+            </aura:set>
+         </aura:if>
+            
+            
+        </div>
+    </div>
+    </div>
+    
+    
+    <!--
+     <aura:if isTrue="{!v.isModalOpen}">
+             
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Task Details</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p>
+                            <c:Task_Management_Task_Layout selectedTask="{!v.clickedTask}"/> 
+                        </p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Close"
+                                          title="Close"
+                                          onclick="{!c.closeModel}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if> -->
+    
+</aura:component>
